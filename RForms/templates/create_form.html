@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="Es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Create Form</title>
+    <link rel ="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/jquery-latest.js"></script>
+
+</head>
+
+<body>
+
+    <h1>New Form</h1><br />
+    <form action="New_form" id="form_create" method=post name="form_create">
+
+        <label for="name">Name:</label>
+        <input id = "form_name"name="form_name" type="text"  placeholder=""/> <br /><br />
+        <label for="name">Detail:</label><textarea id ="detail" name="detail" style=" display:block;"></textarea><br>
+
+        <div id = "opci_new" class="caso">
+            <table id="tab_optnew" name ="tab_optnew">
+
+
+            </table>
+        </div>
+        <img class = "icon" src ="/static/img/down.png" onclick = "down()">
+        <img class = "icon" src ="/static/img/up.png" onclick = "up()">
+        <img class = "icon" src ="/static/img/remove.png" onclick = "del()"><br /><br />
+
+        <textarea id ="area" name="area" style=" display:none;"></textarea>
+
+
+
+    </form>
+
+        <label for="name"> Field Name:</label>
+        <input id ="Field" name="Field" type="text" placeholder=""/> <br /><br />
+        <select id="Tipe" name="Tipe" onChange="mostrar(this.value);">
+                <option value = "0">Tipe</option>
+                 <option value = "T">Simple Text</option>
+                 <option value = "G">Big Text</option>
+                 <option value = "N">Numeric</option>
+                 <option value = "I">Image</option>
+        </select><br><br>
+        <label for="name"> Label:</label>
+        <input id ="label" name="label" type="text" placeholder=""/> <br /><br />
+        <label for="name">Detail:</label><textarea id ="detail_field" name="detail_field" style=" display:block;"></textarea><br>
+
+    <br>
+    <img class = "inc" src ="/static/img/agg2.png" onclick="traspaso();reset();clear_textbox();ocultar()"><br><br><br>
+
+    <div id = "Opt" style=" display:none;" >
+        <label for="name" > Options:</label>
+        <input id ="Options" name="Options" type="text" placeholder="Option"/> <br /><br />
+    </div>
+
+
+
+    <button id = "go" style="cursor: pointer;" onclick = "trans()" >Save</button><br><br />
+</body>
+<script>
+    var fila = -1;
+    function gId(id)
+    {
+        return document.getElementById(id);
+    }
+
+
+    gId("tab_optnew").onclick = seleccionar;
+
+    function traspaso(){
+        var code = "<tr><th>"+gId("Field").value+"</th><td>"+gId("Tipe").value+"</th><td>"+gId("label").value+"</th></td><td>"+gId("detail_field").value+"</tr>";
+        gId("tab_optnew").innerHTML += code;
+
+    }
+    function trans(){
+        var n;
+        var cod =gId("tab_optnew").rows;
+
+        for (var q = 0; q < cod.length; q++)
+        {
+            gId("area").value += cod[q].cells[0].innerHTML+":"+cod[q].cells[1].innerHTML+":"+cod[q].cells[2].innerHTML+":"+cod[q].cells[3].innerHTML+";";
+        }
+
+        gId("form_create").submit();
+    }
+
+    function seleccionar()
+    {
+        r = event.target.parentNode;
+        var tf = -1;
+        var cod =gId("tab_optnew").rows;
+        for (var q = 0; q < cod.length; q++)
+        {
+            cod[q].style.background = "";
+            if (cod[q] == r)
+            {
+                tf = q;
+
+            }
+        }
+        if (tf != fila)
+        {
+            fila = tf;
+            cod[fila].style.background = "red";
+
+        }
+
+        else
+        {
+            fila=-1;
+
+        }
+
+    }
+    function del()
+    {
+        r = event.target.parentNode;
+        gId("tab_optnew").deleteRow(r);
+    }
+    function limpiar()
+    {
+        fila = -1;
+        var cod =gId("tab_optnew").rows;
+        for (var q = 0; q < cod.length; q++)
+        {
+            cod[q].style.background = "";
+        }
+
+    }
+
+
+    function up()
+    {
+        if (fila>0)
+        {
+            var cod =gId("tab_optnew").rows;
+            var tmp = cod[fila-1].innerHTML;
+            cod[fila-1].innerHTML = cod[fila].innerHTML;
+            cod[fila].innerHTML = tmp;
+            limpiar();
+        }
+
+    }
+    function down()
+    {
+        var cod =gId("tab_optnew").rows;
+        if (fila>-1 && fila<cod.length-1)
+        {
+
+            var tmp = cod[fila+1].innerHTML;
+            cod[fila+1].innerHTML = cod[fila].innerHTML;
+            cod[fila].innerHTML = tmp;
+            limpiar();
+        }
+
+    }
+
+    function mostrar(){
+        if (gId("Tipe").value == "S") {
+            gId("Opt").style.display='block';
+        } else {
+            gId("Opt").style.display='none';
+        }
+
+    }
+    function ocultar(){
+        if (gId("Opt").style.display =='block') {
+            gId("Opt").style.display='none';
+        }
+
+    }
+    function clear_textbox()
+    {
+        gId("Field").value = "";
+        gId("Options").value = "";
+        gId("label").value = "";
+        gId("detail_field").value = "";
+
+    }
+
+    function reset()
+    {
+        gId("Tipe").selectedIndex = 0;
+    }
+
+</script>
+
+</html>

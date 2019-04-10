@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="Es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Formulario</title>
+    <link rel ="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/jquery-latest.js"></script>
+</head>
+
+<body>
+    <form action="save_info" id="save_form"  method= 'POST' name="save_form">
+
+
+        <label >{{ form.name }}</label><br /><br />
+
+
+        {% for c in data %}
+
+            {% if c.type == "T" %}
+
+                <label >{{ c.label }}: </label>
+                <input type = "text" name = "{{ c.id }}" id="{{ c.id }}"placeholder = "Ingresa"/><br /><br />
+
+            {% endif %}
+
+            {% if c.type == "G" %}
+
+                <label >{{ c.label }}: </label>
+                <textarea name = "{{ c.id }}" id = "{{ c.id }}"></textarea><br /><br />
+
+            {% endif %}
+
+            {% if c.type == "N" %}
+
+                <label >{{ c.label }}: </label>
+                <input type = "text" name = "{{ c.id }}" id="{{ c.id }}" placeholder = "Ingresa"/><br /><br />
+
+            {% endif %}
+
+            {% if c.type == "I" %}
+
+                <label >{{ c.label }}: </label>
+                <input type = "file" name = "{{ c.id }}" id ="{{ c.id }}" /><br /><br />
+
+            {% endif %}
+        {% endfor %}
+        <textarea name = "res" id = "res" style = "display:none"></textarea>
+        <input style = "display:none" type = "text" name = "id_form" id= "id_form" value = {{ form.id}} />
+
+    </form>
+    
+</body>
+<script>
+     function gId(id)
+    {
+        return document.getElementById(id);
+    }
+    function trans()
+    {
+        {% for c in data %}
+            gId("res").value += gId("{{ c.id }}").name+":"+gId("{{ c.id }}").value+";";
+        {% endfor %}
+        gId("save_form").submit();
+
+    }
+</script>
+</html>

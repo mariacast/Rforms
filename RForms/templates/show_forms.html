@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="Es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Show Forms</title>
+    <link rel ="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/jquery-latest.js"></script>
+</head>
+
+<body>
+    <form action="view_form" id="form_show" method= 'POST' name="form_show">
+        <div id = "opci_new" class="caso">
+            <table id="tab_optnew" name ="tab_optnew">
+                
+                {% for row in data %}
+                    <tr><td style="display:none;">{{ row.id }} </td><td>{{ row.name }}</td><td>{{row.estatus}}</td></tr>
+
+                {% endfor %}
+            </table>
+        </div><br /><br />
+
+        <textarea id ="id_form" name="id_form" style=" display:none;"></textarea>
+        <img class = "icon" src ="/static/img/fvl.png" style="cursor: pointer;" onclick = "ver()">
+    </form>
+
+    <form action = "delete_form"method = 'POST' id ="delete" >
+        <textarea id ="textborrar" name="textborrar" style=" display:none;"></textarea>
+        <img class = "icon" src ="/static/img/remove.png" style="cursor: pointer;" onclick = "eliminar()">
+
+    </form>
+
+    <form action = "update_status" method = 'POST' id = "Act_estado">
+        <input id ="Id_Status" name="Id_Status" type="text" style=" display:none;"/>
+        <img class = "icon" src ="/static/img/chulo1.png" style="cursor: pointer;" onclick = "estado()"><br /><br />
+    </form>
+</body>
+
+
+<script>
+    var fila = -1;
+
+    function gId(id)
+    {
+        return document.getElementById(id);
+    }
+    gId("tab_optnew").onclick = seleccionar;
+
+    function seleccionar()
+    {
+        r = event.target.parentNode;
+        var tf = -1;
+        var cod =gId("tab_optnew").rows;
+        for (var q = 0; q < cod.length; q++)
+        {
+            cod[q].style.background = "";
+            if (cod[q] == r)
+            {
+                tf = q;
+
+            }
+        }
+        if (tf != fila)
+        {
+            fila = tf;
+            cod[fila].style.background = "red";
+        }
+        else
+        {
+            fila=-1;
+
+        }
+
+    }
+
+    function eliminar()
+    {
+        r = event.target.parentNode;
+        gId("textborrar").value = gId("tab_optnew").rows[fila].cells[0].innerHTML;
+        gId("delete").submit();
+
+    }
+    function ver()
+    {
+        r = event.target.parentNode;
+        gId("id_form").value = gId("tab_optnew").rows[fila].cells[0].innerHTML;
+        gId("form_show").submit();
+
+    }
+    function estado()
+    {
+        r = event.target.parentNode;
+        gId("Id_Status").value = gId("tab_optnew").rows[fila].cells[0].innerHTML;
+        gId("Act_estado").submit();
+    }
+
+</script>
+
+</html>
